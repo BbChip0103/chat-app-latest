@@ -12,7 +12,7 @@ const initialState = {
     open: false,
     type: "CONTACT", // can be CONTACT, STARRED, SHARED
   },
-  isLoggedIn: true,
+  isLoggedIn: false,
   tab: 0, // [0, 1, 2, 3]
   snackbar: {
     open: null,
