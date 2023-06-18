@@ -260,34 +260,36 @@ export const UpdateUserProfile = (formValues) => {
     const file = formValues.avatar;
 
     const key = v4();
+    const filepath = "profile_pic/" + key;
 
     try{
       S3.getSignedUrl(
         "putObject",
-        { Bucket: S3_BUCKET_NAME, Key: key, ContentType: `image/${file.type}` },
+        { Bucket: S3_BUCKET_NAME, Key: filepath, ContentType: `image/${file.type}` },
         async (_err, presignedURL) => {
           await fetch(presignedURL, {
             method: "PUT",
-  
+
             body: file,
-  
+
             headers: {
               "Content-Type": file.type,
             },
-          });
+          })
+          .then((response) => response.json())
+          .then((result) => console.log("ㅁㅁㅁㄹㅇㅁㅇ:", result));
         }
       );
     }
     catch(error) {
       console.log(error);
     }
-
     
 
     axios
       .patch(
         "/user/update-me",
-        { ...formValues, avatar: key },
+        { ...formValues, avatar: filepath },
         {
           headers: {
             "Content-Type": "application/json",
