@@ -3,7 +3,7 @@ import axios from "../../utils/axios";
 // import S3 from "../../utils/s3";
 import {v4} from 'uuid';
 import S3 from "../../utils/s3";
-import { S3_BUCKET_NAME } from "../../config";
+import { S3_BUCKET_NAME, API_V2_URL } from "../../config";
 // ----------------------------------------------------------------------
 
 const initialState = {
@@ -262,29 +262,26 @@ export const UpdateUserProfile = (formValues) => {
     const key = v4();
     const filepath = "profile_pic/" + key;
 
-    try{
-      S3.getSignedUrl(
-        "putObject",
-        { Bucket: S3_BUCKET_NAME, Key: filepath, ContentType: `image/${file.type}` },
-        async (_err, presignedURL) => {
-          await fetch(presignedURL, {
-            method: "PUT",
-
-            body: file,
-
-            headers: {
-              "Content-Type": file.type,
-            },
-          })
-          .then((response) => response.json())
-          .then((result) => console.log("ㅁㅁㅁㄹㅇㅁㅇ:", result));
-        }
-      );
-    }
-    catch(error) {
-      console.log(error);
-    }
-    
+    const requestUrl = API_V2_URL+"/get-s3-upload-url";
+    // const queryString = `?bucketName=${S3_BUCKET_NAME}&objectKey=` + encodeURIComponent(filepath);
+    const queryString = `?bucketName=${S3_BUCKET_NAME}&objectKey=` + encodeURIComponent(filepath) + "&contentType=" + encodeURIComponent(file.type);
+    fetch(requestUrl + queryString)
+    .then(response => response.json())
+    .then(presignedURL => {
+        console.log(presignedURL["body"]);
+        fetch(presignedURL["body"], {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": file.type,
+          },
+        })
+        .then((response) => response.json())
+        .then((result) => console.log("result:", result));
+      })
+      .catch(error => {
+        console.error('Failed to fetch Presigned URL:', error);
+      });
 
     axios
       .patch(
