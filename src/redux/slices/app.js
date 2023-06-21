@@ -269,7 +269,7 @@ export const UpdateUserProfile = (formValues) => {
     .then(response => response.json() )
     .then(presignedURL => {
         console.log(presignedURL);
-        fetch(presignedURL["url"], {
+        fetch(presignedURL, {
           method: "PUT",
           body: file,
           headers: {
