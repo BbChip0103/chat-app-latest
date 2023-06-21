@@ -262,14 +262,14 @@ export const UpdateUserProfile = (formValues) => {
     const key = v4();
     const filepath = "profile_pic/" + key;
 
-    const requestUrl = API_V2_URL+"/get-s3-upload-url";
+    const requestUrl = API_V2_URL+"/s3-upload-url";
     // const queryString = `?bucketName=${S3_BUCKET_NAME}&objectKey=` + encodeURIComponent(filepath);
     const queryString = `?bucketName=${S3_BUCKET_NAME}&objectKey=` + encodeURIComponent(filepath) + "&contentType=" + encodeURIComponent(file.type);
     fetch(requestUrl + queryString)
-    .then(response => response.json())
+    .then(response => response.json() )
     .then(presignedURL => {
-        console.log(presignedURL["body"]);
-        fetch(presignedURL["body"], {
+        console.log(presignedURL);
+        fetch(presignedURL["url"], {
           method: "PUT",
           body: file,
           headers: {
