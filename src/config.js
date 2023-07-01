@@ -4,12 +4,14 @@ import { enUS, frFR, zhCN, viVN, arSD } from '@mui/material/locale';
 // routes
 import { PATH_DASHBOARD } from "./routes/paths";
 
-export const BASE_URL = "https://api.chat.codingmonk.in/";
+export const BASE_URL = "https://api.chatapp.bbchip13.site/";
+export const SOCKETIO_URL = "https://api.chatapp.bbchip13.site/";
 
-export const S3_BUCKET_NAME = 'codingmonk';
-export const AWS_ACCESS_KEY = 'AKIARPJQ4HSYLBIK2TDE';
-export const AWS_SECRET_ACCESS_KEY = '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';
-export const AWS_S3_REGION = 'ap-south-1'; // eg. ap-south-1
+export const S3_BUCKET_NAME = "bbchip13-chatapp-test";
+export const AWS_S3_REGION = "ap-northeast-2"; // eg. ap-south-1
+
+export const CDN_URL = "https://file.chatapp.bbchip13.site";
+export const API_V2_URL = "https://api2.chatapp.bbchip13.site";
 
 export const defaultSettings = {
   themeMode: "light",
